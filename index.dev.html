@@ -16,7 +16,7 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" type="image/webp" href="assets/optimized/hilal-icon.webp" />
     <link rel="apple-touch-icon" href="assets/optimized/apple-touch-icon.png" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.min.css" />
   </head>
   <body>
     <div
@@ -42,8 +42,7 @@
     <main class="app">
       <section class="content">
         <section class="page active" id="home">
-          <div class="top home-top">
-            <span class="kicker">نظام النادي</span>
+          <div class="top home-top" style="justify-content: space-between;">
             <div class="home-logo" aria-label="شعار الهلال">
               <img
                 class="logo-img"
@@ -603,17 +602,6 @@
       }
     </script>
     <script src="js/firebase-runtime.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/helpers.js"></script>
-    <script src="js/icons.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/renderSports.js"></script>
-    <script src="js/renderAttendance.js"></script>
-    <script src="js/renderCoach.js"></script>
-    <script src="js/renderPlayer.js"></script>
-    <script src="js/forms.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/events.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/app.min.js"></script>
   </body>
 </html>
