@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0b6dff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="إدارة النادي" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>منظومة إدارة نادي الهلال</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/webp" href="assets/optimized/hilal-icon.webp" />
+    <link rel="apple-touch-icon" href="assets/optimized/apple-touch-icon.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div
+      class="splash"
+      id="splash"
+      aria-hidden="true"
+      style="background: #09284d url('assets/optimized/hilal-splash.webp') center center / 100% 100% no-repeat"
+    >
+      <div class="splash-card">
+        <img
+          class="splash-poster"
+          src="assets/optimized/hilal-splash.webp"
+          alt="إدارة النادي"
+          decoding="async"
+          fetchpriority="high"
+          loading="eager"
+        />
+        <div class="splash-loader" aria-hidden="true">
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <main class="app">
+      <section class="content">
+        <section class="page active" id="home">
+          <div class="top home-top">
+            <span class="kicker">نظام النادي</span>
+            <div class="home-logo" aria-label="شعار الهلال">
+              <img
+                class="logo-img"
+                src="assets/optimized/hilal-icon.webp"
+                alt=""
+                aria-hidden="true"
+                decoding="async"
+                fetchpriority="high"
+                loading="eager"
+              />
+            </div>
+          </div>
+          <h1 class="title">ألعاب الهلال المختلفة</h1>
+          <p class="desc">اختر الرياضة ثم انتقل لمسار المدرب أو اللاعب</p>
+          <div class="sports" id="sportsGrid"></div>
+        </section>
+        <section class="page" id="sport">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="home">‹</button>
+              <button class="icon" data-go="home">⌂</button>
+            </div>
+            <span class="chip" id="sportStatus">نشط</span>
+          </div>
+          <h2 class="title" id="sportTitle">اختيار المسار</h2>
+          <p class="desc" id="sportDesc">
+            اختر كيف تريد الدخول بعد اختيار الرياضة
+          </p>
+          <div class="grid2">
+            <button class="soft" id="showPlayer">دخول اللاعب</button>
+            <button class="btn" id="showCoach">دخول المدرب</button>
+          </div>
+          <div class="card panel-card hidden" id="coachPanel">
+            <h3>دخول المدرب</h3>
+            <input id="coachUser" class="input" placeholder="اسم المستخدم" />
+            <input
+              id="coachPass"
+              class="input"
+              type="password"
+              placeholder="كلمة المرور"
+            />
+            <button class="btn" id="coachLogin">دخول المدرب</button>
+            <p class="message" id="coachMsg"></p>
+          </div>
+          <div class="card panel-card hidden" id="playerPanel">
+            <h3>دخول اللاعب</h3>
+            <input id="playerCode" class="input" placeholder="A7-3K-L9" />
+            <button class="btn" id="playerLogin">دخول اللاعب</button>
+            <p class="message" id="playerMsg"></p>
+          </div>
+        </section>
+        <section class="page" id="coachDash">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="home">⌂</button>
+              <button
+                class="icon menu-toggle"
+                data-drawer-open
+                data-icon="menu"
+                type="button"
+                aria-label="فتح القائمة"
+              >
+                ☰
+              </button>
+            </div>
+            <span class="kicker">Dashboard</span>
+            <span class="chip" id="sportChip">رفع الأثقال</span>
+          </div>
+          <h2 class="title">لوحة التحكم</h2>
+          <p class="desc">ملخص سريع وتحكم أساسي للمدرب</p>
+          <div class="grid3">
+            <div class="stat">
+              <small>عدد اللاعبين</small><b id="total">0</b>
+            </div>
+            <div class="stat">
+              <small>نسبة الحضور</small><b id="rate">0%</b>
+            </div>
+            <div class="stat"><small>حضور اليوم</small><b id="today">0</b></div>
+          </div>
+          <div class="card code-card">
+            <div class="row"><b>الكود</b><span class="chip">للاعب</span></div>
+            <div class="code-actions">
+              <input id="codeInput" class="input" placeholder="A7-3K-L9" />
+              <button
+                class="copy-code"
+                id="copyCode"
+                type="button"
+                aria-label="نسخ الكود"
+              ></button>
+              <button class="btn" id="saveCode">حفظ</button>
+            </div>
+            <p id="codeMsg" class="message"></p>
+            <button class="soft register-btn" id="toggleRegister" type="button">
+              تسجيل لاعب
+            </button>
+            <div class="register-panel hidden" id="registerPanel">
+              <h3>إضافة لاعب للموسم الجديد</h3>
+              <input id="regName" class="input" placeholder="الاسم الكامل" />
+              <div class="form-grid">
+                <input
+                  id="regNational"
+                  class="input"
+                  placeholder="رقم الهوية"
+                />
+                <input
+                  id="regPhone"
+                  class="input"
+                  placeholder="رقم الجوال 05xxxxxxxx"
+                />
+                <input
+                  id="regBirth"
+                  class="input"
+                  type="date"
+                  aria-label="تاريخ الميلاد"
+                />
+                <input
+                  id="regAge"
+                  class="input"
+                  type="number"
+                  min="1"
+                  placeholder="العمر"
+                />
+                <input
+                  id="regWeight"
+                  class="input"
+                  type="number"
+                  min="1"
+                  placeholder="الوزن"
+                />
+                <select id="regGroup" class="select">
+                  <option>فئة الكبار</option>
+                  <option>فئة الشباب</option>
+                  <option>فئة الناشئين</option>
+                  <option>فئة البراعم</option>
+                </select>
+                <textarea
+                  id="regNote"
+                  class="textarea wide"
+                  placeholder="ملاحظات المدرب"
+                ></textarea>
+              </div>
+              <button class="btn" id="saveNewPlayer" type="button">
+                حفظ بيانات اللاعب
+              </button>
+              <p id="registerMsg" class="message"></p>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="daily">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="coachDash">‹</button>
+              <button class="icon" data-go="home">⌂</button>
+            </div>
+            <span class="chip">تمارين اليوم</span>
+          </div>
+          <h2 class="title">التمارين اليومية</h2>
+          <select id="dailyGroup" class="select">
+            <option>فئة الكبار</option>
+            <option>فئة الشباب</option>
+            <option>فئة الناشئين</option>
+            <option>فئة البراعم</option>
+          </select>
+          <div class="list" id="dailyList"></div>
+          <input id="dailyTitle" class="input" placeholder="اسم التمرين" />
+          <input id="dailyDetails" class="input" placeholder="التفاصيل" />
+          <textarea
+            id="dailyNote"
+            class="textarea"
+            placeholder="ملاحظات المدرب"
+          ></textarea>
+          <button class="btn" id="addDaily">إضافة التمرين</button>
+          <p id="dailyMsg" class="message"></p>
+        </section>
+        <section class="page" id="weekly">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="coachDash">‹</button>
+              <button class="icon" data-go="home">⌂</button>
+            </div>
+            <span class="chip">أسبوعي</span>
+          </div>
+          <h2 class="title">الجدول الأسبوعي</h2>
+          <div class="schedule" id="weeklyEditor"></div>
+          <button class="btn" id="saveWeekly">حفظ الجدول</button>
+          <p id="weeklyMsg" class="message"></p>
+        </section>
+        <section class="page" id="attendance">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="coachDash">‹</button>
+              <button class="icon" data-go="home">⌂</button>
+            </div>
+            <span class="chip attendance-chip" data-icon-chip="calendar"
+              >تشغيل يومي</span
+            >
+          </div>
+          <h2 class="title">الحضور والغياب</h2>
+          <div class="day-strip" id="dayStrip" aria-label="أيام الأسبوع"></div>
+          <div class="grid3">
+            <div class="stat">
+              <small>حاضر</small><b id="presentCount">0</b>
+            </div>
+            <div class="stat"><small>غائب</small><b id="absentCount">0</b></div>
+            <div class="stat">
+              <small>النسبة</small><b id="ratioCount">0%</b>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input class="input" id="search" placeholder="بحث عن لاعب" />
+            <button class="ghost reset-btn hidden" id="reset">تصفير</button>
+          </div>
+          <div id="attendanceRoot"></div>
+        </section>
+        <section class="page" id="reports">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="coachDash">‹</button>
+              <button class="icon" data-go="home">⌂</button>
+            </div>
+            <span class="chip" data-icon-chip="reports">التقارير</span>
+          </div>
+          <h2 class="title">التقارير</h2>
+          <p class="desc">ملخص سريع للحضور واللاعبين حسب البيانات الحالية</p>
+          <div class="grid3">
+            <div class="stat">
+              <small>عدد اللاعبين</small><b id="reportTotalPlayers">0</b>
+            </div>
+            <div class="stat">
+              <small>حضور اليوم</small><b id="reportTodayAttendance">0</b>
+            </div>
+            <div class="stat">
+              <small>نسبة الحضور</small><b id="reportAttendanceRate">0%</b>
+            </div>
+          </div>
+          <div class="list" id="reportsList"></div>
+        </section>
+        <section class="page" id="adminDash">
+          <div class="top">
+            <div class="nav-actions">
+              <button class="icon" data-go="home">⌂</button>
+              <button
+                class="icon menu-toggle"
+                data-drawer-open
+                data-icon="menu"
+                type="button"
+                aria-label="فتح القائمة"
+              >
+                ☰
+              </button>
+            </div>
+            <span class="kicker">Admin</span>
+            <span class="chip">لوحة الإداري</span>
+          </div>
+          <h2 class="title">لوحة الإداري</h2>
+          <p class="desc">إدارة الرياضات والمدربين واللاعبين والإعدادات</p>
+          <div class="grid3 admin-overview">
+            <div class="stat">
+              <small>عدد الرياضات</small><b id="adminSportsCount">0</b>
+            </div>
+            <div class="stat">
+              <small>عدد المدربين</small><b id="adminCoachesCount">0</b>
+            </div>
+            <div class="stat">
+              <small>عدد اللاعبين</small><b id="adminPlayersCount">0</b>
+            </div>
+            <div class="stat">
+              <small>حضور اليوم</small><b id="adminTodayAttendance">0</b>
+            </div>
+          </div>
+          <div class="admin-summary-grid" id="adminSportsSummary"></div>
+          <div class="admin-tabs" id="adminTabs">
+            <button class="active" data-admin-tab="sports" type="button">
+              الرياضات
+            </button>
+            <button data-admin-tab="coaches" type="button">المدربين</button>
+            <button data-admin-tab="players" type="button">اللاعبين</button>
+            <button data-admin-tab="attendance" type="button">الحضور</button>
+            <button data-admin-tab="settings" type="button">الإعدادات</button>
+          </div>
+          <section class="admin-panel active" data-admin-panel="sports">
+            <h3>إدارة الرياضات</h3>
+            <div class="admin-form">
+              <input id="sportNameAr" class="input" placeholder="اسم الرياضة بالعربي" />
+              <input id="sportNameEn" class="input" placeholder="اسم الرياضة بالإنجليزي" />
+              <input id="sportImage" class="input" placeholder="مسار الصورة" />
+              <label class="admin-check">
+                <input id="sportActive" type="checkbox" checked />
+                <span>مفعّلة</span>
+              </label>
+              <button class="btn" id="addSportBtn" type="button">إضافة رياضة</button>
+            </div>
+            <p id="sportsAdminMsg" class="message"></p>
+            <div class="list" id="adminSportsList"></div>
+          </section>
+          <section class="admin-panel" data-admin-panel="coaches">
+            <h3>إدارة المدربين</h3>
+            <p class="admin-note">
+              اسم المستخدم هو بريد المدرب. كلمة المرور لا يمكن عرضها بعد إنشائها، ويمكن إرسال رابط إعادة تعيين من هنا.
+            </p>
+            <div class="admin-filters">
+              <select id="coachSportFilterAdmin" class="select"></select>
+              <input id="coachSearchAdmin" class="input" placeholder="بحث باسم المدرب أو البريد" />
+            </div>
+            <div class="admin-form">
+              <input id="coachNameAdmin" class="input" placeholder="اسم المدرب" />
+              <input id="coachEmailAdmin" class="input" placeholder="بريد المدرب" />
+              <input id="coachPhoneAdmin" class="input" placeholder="رقم الجوال" />
+              <input id="coachUidAdmin" class="input" placeholder="Firebase UID إن وجد" />
+              <select id="coachSportAdmin" class="select"></select>
+              <label class="admin-check">
+                <input id="coachActiveAdmin" type="checkbox" checked />
+                <span>مفعّل</span>
+              </label>
+              <button class="btn" id="addCoachBtn" type="button">إضافة ملف مدرب</button>
+            </div>
+            <p id="coachesAdminMsg" class="message"></p>
+            <div class="list" id="adminCoachesList"></div>
+          </section>
+          <section class="admin-panel" data-admin-panel="players">
+            <h3>إدارة اللاعبين</h3>
+            <div class="admin-filters">
+              <select id="playerSportFilter" class="select"></select>
+              <select id="playerCoachFilter" class="select"></select>
+              <select id="playerGroupFilter" class="select">
+                <option value="">كل الفئات</option>
+                <option>فئة الكبار</option>
+                <option>فئة الشباب</option>
+                <option>فئة الناشئين</option>
+                <option>فئة البراعم</option>
+              </select>
+              <input
+                id="playerSearchAdmin"
+                class="input"
+                placeholder="بحث بالاسم أو الهوية"
+              />
+            </div>
+            <p id="playersAdminMsg" class="message"></p>
+            <div class="list" id="adminPlayersList"></div>
+          </section>
+          <section class="admin-panel" data-admin-panel="attendance">
+            <h3>نظرة الحضور</h3>
+            <div class="admin-filters">
+              <input id="attendanceDateFilter" class="input" type="date" />
+              <select id="attendanceSportFilter" class="select"></select>
+              <select id="attendanceCoachFilter" class="select"></select>
+            </div>
+            <p id="attendanceAdminMsg" class="message"></p>
+            <div class="list" id="adminAttendanceList"></div>
+          </section>
+          <section class="admin-panel" data-admin-panel="settings">
+            <h3>الإعدادات</h3>
+            <div class="admin-form">
+              <input
+                id="settingsWhatsapp"
+                class="input"
+                placeholder="رقم واتساب الدعم 9665..."
+              />
+              <input id="settingsAppName" class="input" placeholder="اسم التطبيق" />
+              <button class="btn" id="saveSettingsBtn" type="button">
+                حفظ الإعدادات
+              </button>
+            </div>
+            <p class="admin-note">إعدادات اللغة جاهزة كزر فقط وسيتم دعمها لاحقاً</p>
+            <p id="settingsAdminMsg" class="message"></p>
+          </section>
+        </section>
+        <section class="page" id="playerDash">
+          <div class="top">
+            <button class="icon" data-go="home">⌂</button>
+            <span class="kicker">لوحة اللاعب</span>
+            <span class="chip" id="playerSport">رفع الأثقال</span>
+          </div>
+          <h2 class="title">لوحة اللاعب</h2>
+          <h3>جدول التمارين الأسبوعية</h3>
+          <div class="list" id="playerWeekly"></div>
+        </section>
+      </section>
+      <nav class="nav hidden" id="bottomNav">
+        <button class="active" data-go="coachDash" data-nav="coachDash">
+          الرئيسية
+        </button>
+        <button data-go="attendance" data-nav="attendance">التحضير</button>
+        <button data-go="weekly" data-nav="weekly">التمارين</button>
+      </nav>
+      <div class="toast hidden" id="toast"></div>
+      <div class="drawer-backdrop hidden" id="drawerBackdrop"></div>
+      <aside
+        class="side-drawer hidden"
+        id="sideDrawer"
+        aria-label="القائمة الجانبية"
+        aria-hidden="true"
+      >
+        <div class="drawer-head">
+          <b>القائمة</b>
+          <button
+            class="icon"
+            id="closeDrawer"
+            data-icon="back"
+            type="button"
+            aria-label="إغلاق القائمة"
+          >
+            ‹
+          </button>
+        </div>
+        <nav class="drawer-links">
+          <button data-drawer-go="home" type="button">الرئيسية</button>
+          <button data-drawer-go="coachDash" type="button">لوحة المدرب</button>
+          <button data-drawer-go="attendance" type="button">الحضور والغياب</button>
+          <button data-drawer-go="weekly" type="button">الجدول والتمارين</button>
+          <button data-drawer-go="reports" type="button">التقارير</button>
+          <a
+            id="supportWhatsappLink"
+            href="https://wa.me/966500000000"
+            target="_blank"
+            rel="noopener"
+            >الدعم الفني واتساب</a
+          >
+          <button id="openPolicies" type="button">السياسات</button>
+          <button id="languageToggle" type="button">تغيير اللغة</button>
+          <button id="openAdminLogin" type="button">دخول الإداري</button>
+          <button id="drawerLogout" type="button">تسجيل الخروج</button>
+        </nav>
+      </aside>
+      <aside
+        id="homeDrawer"
+        class="home-drawer closed"
+        aria-hidden="false"
+        aria-label="شريط الأدوات"
+      >
+        <button
+          class="icon menu-toggle"
+          data-drawer-open
+          data-icon="menu"
+          type="button"
+          aria-label="فتح القائمة"
+        >
+          ☰
+        </button>
+        <nav>
+          <button class="hd-btn" id="homeAdminBtn" aria-label="???? ???????" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z" />
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            </svg>
+          </button>
+          <a
+            class="hd-btn"
+            id="homeWhatsapp"
+            href="https://wa.me/966500000000"
+            target="_blank"
+            rel="noopener"
+            aria-label="??? ??????"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 15a5 5 0 0 1-3 3l-1 .3a5 5 0 0 1-4.2-1.2L11 16a5 5 0 1 1 10-1z" />
+            </svg>
+          </a>
+          <button class="hd-btn" id="homePolicyBtn" aria-label="????????" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2l7 4v6c0 5-4 9-7 10-3-1-7-5-7-10V6l7-4z" />
+            </svg>
+          </button>
+          <button class="hd-btn" id="homeLangBtn" aria-label="?????" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2 12h20" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+          </button>
+          <button class="hd-btn" id="homeAboutBtn" aria-label="???" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+              <path d="M12 10v4" />
+              <path d="M12 7h.01" />
+            </svg>
+          </button>
+        </nav>
+      </aside>
+      <div
+        class="modal hidden simple-modal"
+        id="policyModal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="السياسات"
+      >
+        <button class="modal-close" id="closePolicyModal" type="button">
+          إغلاق ×
+        </button>
+        <div class="simple-card">
+          <h3>السياسات</h3>
+          <p>سياسات الاستخدام والخصوصية سيتم تحديثها لاحقاً</p>
+        </div>
+      </div>
+      <div
+        class="modal hidden simple-modal"
+        id="aboutModal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="حول النظام"
+      >
+        <button class="modal-close" id="closeAboutModal" type="button">
+          إغلاق ×
+        </button>
+        <div class="simple-card">
+          <h3>حول</h3>
+          <p>نظام إدارة النادي - نسخة أولية لإدارة الرياضات والمدربين واللاعبين والحضور.</p>
+        </div>
+      </div>
+      <div
+        class="modal hidden simple-modal"
+        id="adminLoginModal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="دخول الإداري"
+      >
+        <button class="modal-close" id="closeAdminLogin" type="button">
+          إغلاق ×
+        </button>
+        <div class="simple-card">
+          <h3>دخول الإداري</h3>
+          <input
+            id="adminLoginEmail"
+            class="input"
+            placeholder="اسم المستخدم أو البريد الإلكتروني"
+          />
+          <input
+            id="adminLoginPass"
+            class="input"
+            type="password"
+            placeholder="كلمة المرور"
+          />
+          <button class="btn" id="adminLoginBtn" type="button">دخول الإداري</button>
+          <p class="message" id="adminLoginMsg"></p>
+        </div>
+      </div>
+      <div
+        class="modal hidden"
+        id="playerCardModal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="بطاقة اللاعب"
+      >
+        <button class="modal-close" id="closePlayerCard" type="button">
+          إغلاق ×
+        </button>
+        <div class="modal-card" id="playerCardBody"></div>
+      </div>
+    </main>
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js",
+          "firebase/auth": "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js",
+          "firebase/firestore": "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js",
+          "firebase/firestore/lite": "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-lite.js"
+        }
+      }
+    </script>
+    <script src="js/firebase-runtime.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/renderSports.js"></script>
+    <script src="js/renderAttendance.js"></script>
+    <script src="js/renderCoach.js"></script>
+    <script src="js/renderPlayer.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
